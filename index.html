@@ -1,207 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Generated | VNKR PING</title>
-    <style>
-        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #00ff88; --error: #ff4444; }
-        
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px;
-            box-sizing: border-box;
-        }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Key Generated | VNKR PING</title>
 
-        .container { 
-            width: 100%; 
-            max-width: 400px; 
-            text-align: center;
-            margin-top: 50px;
-        }
+<style>
+:root{
+    --bg:#000;
+    --card:rgba(18, 18, 18, 0.85);
+    --text:#fff;
+    --muted:#888;
+    --accent:#ff2a2a;
+    --danger:#ff4444;
+}
 
-        /* --- UI Visibility Controls --- */
-        #mainContainer { display: none; }
-        #bypassContainer { display: none; }
+*{box-sizing:border-box}
 
-        /* --- BYPASS ERROR CARD --- */
-        .error-card { 
-            background: #1a0a0a; 
-            border: 1px solid #441111; 
-            border-radius: 28px; 
-            padding: 40px 30px; 
-            box-shadow: 0 10px 40px rgba(255,0,0,0.1);
-        }
-        .error-icon { font-size: 50px; margin-bottom: 20px; }
-        .error-title { color: var(--error); font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+body{
+    margin:0;
+    min-height:100vh;
+    padding:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    position:relative;
+    overflow-x:hidden;
+}
 
-        .key-icon { 
-            background: #1a1a1a; 
-            width: 85px; 
-            height: 85px; 
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            margin: -45px auto 15px; 
-            border: 1px solid #333; 
-            overflow: hidden; 
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
-            position: relative;
-            z-index: 10;
-        }
+/* Particle Canvas Container */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
 
-        .key-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.container{
+    width:100%;
+    max-width:430px;
+    text-align:center;
+    position:relative;
+    z-index:1;
+}
 
-        @media (min-width: 768px) {
-            .container { max-width: 450px; }
-            .key-icon { width: 110px; height: 110px; margin: -55px auto 20px; }
-        }
+.logo{
+    width:90px;
+    height:90px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    overflow:hidden;
+    background:#1a1a1a;
+    border:1px solid #333;
+    box-shadow: 0 0 25px rgba(255, 42, 42, 0.35);
+}
 
-        h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
-        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+.logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
-        .card { 
-            background: var(--card); 
-            border: 1px solid #222; 
-            border-radius: 28px; 
-            padding: 40px 30px 30px; 
-            text-align: center; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.6); 
-            position: relative;
-        }
+h1{
+    font-size:28px;
+    margin:0 0 8px;
+}
 
-        h2 { font-size: 22px; margin-bottom: 12px; color: var(--accent); font-weight: 700; }
-        .card-p { color: #999; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+.subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:28px;
+}
 
-        .key-box { 
-            background: #000; 
-            padding: 22px; 
-            border-radius: 18px; 
-            border: 1px dashed var(--accent); 
-            margin-bottom: 25px; 
-            position: relative; 
-            overflow: hidden; 
-        }
-        
-        #finalKey { 
-            color: var(--accent); 
-            font-family: 'Courier New', monospace; 
-            font-size: 19px; 
-            font-weight: bold; 
-            letter-spacing: 1px; 
-        }
-        
-        .btn { 
-            width: 100%; 
-            padding: 18px; 
-            background: #ffffff; 
-            color: #000; 
-            border: none; 
-            border-radius: 16px; 
-            font-size: 16px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+.card{
+    background:var(--card);
+    border:1px solid #222;
+    border-radius:28px;
+    padding:32px 25px 25px;
+    box-shadow:0 15px 50px rgba(0,0,0,.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
 
-        .btn:hover { 
-            transform: scale(1.03); 
-            background: var(--accent); 
-            box-shadow: 0 10px 20px rgba(0,255,136,0.2);
-        }
+h2{
+    color:var(--accent);
+    font-size:22px;
+    margin:0 0 12px;
+}
 
-        .btn-red { background: var(--error); color: white; margin-top: 20px; }
+.description{
+    color:#999;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
 
-        .footer { 
-            margin-top: 80px; 
-            color: #333; 
-            font-size: 10px; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            font-weight: bold; 
-        }
-    </style>
+.key-box{
+    background:rgba(0, 0, 0, 0.7);
+    border:1px dashed var(--accent);
+    border-radius:18px;
+    padding:22px 10px;
+    margin-bottom:20px;
+    overflow:hidden;
+    box-shadow: 0 0 15px rgba(255, 42, 42, 0.15);
+}
+
+#finalKey{
+    color:var(--accent);
+    font-family:"Courier New",monospace;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:1px;
+    word-break:break-all;
+}
+
+button{
+    width:100%;
+    padding:17px;
+    border:0;
+    border-radius:15px;
+    background:#fff;
+    color:#000;
+    font-size:16px;
+    font-weight:800;
+    cursor:pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover{
+    background:var(--accent);
+    color:#fff;
+    box-shadow: 0 0 20px rgba(255, 42, 42, 0.5);
+}
+
+.status{
+    margin-top:15px;
+    color:#777;
+    font-size:12px;
+}
+</style>
 </head>
+
 <body>
 
+<!-- Interactive Red Particle Canvas -->
+<canvas id="particle-canvas"></canvas>
+
 <div class="container">
-    <div id="mainContainer" style="display: none;">
-        <div class="key-icon">
-            <img src="images/logo.png" alt="UKM">
-        </div>
 
-        <h1>Access Unlocked</h1>
-        <p class="subtitle">Your device-locked license key is ready.</p>
-
-        <div class="card">
-            <h2>Generation Success!</h2>
-            <p class="card-p">This key is locked to your device. Share it, and it won't work for others.</p>
-
-            <div class="key-box">
-                <span id="finalKey">ACCESS DENIED</span>
-            </div>
-
-            <button class="btn" id="copyBtn" onclick="copyKey()">
-                COPY TO CLIPBOARD
-            </button>
-        </div>
+    <div class="logo">
+        <img src="images/logo.png" alt="VNKR PING">
     </div>
 
-    <div id="bypassContainer" style="display: block;">
-        <div class="error-card">
-            <div class="error-icon">🚫</div>
-            <div class="error-title">Bypass Detected!</div>
-            <p style="color:#888; font-size: 14px; line-height: 1.5;">Direct access is prohibited. Please use the official link from the script to generate your key.</p>
-            <button class="btn btn-red" onclick="location.href='steps.html'">RETURN TO STEPS</button>
+    <h1>Access Unlocked</h1>
+
+    <p class="subtitle">
+        Your access key is ready.
+    </p>
+
+    <div class="card">
+
+        <h2 id="cardHeader">Generation Success!</h2>
+
+        <p class="description" id="cardDesc">
+            Your key has been generated successfully.
+        </p>
+
+        <div class="key-box" id="keyContainer">
+            <span id="finalKey">GENERATING...</span>
         </div>
+
+        <button onclick="copyKey()" id="copyBtn">
+            COPY TO CLIPBOARD
+        </button>
+
+        <div class="status" id="status">
+            Generating key...
+        </div>
+
     </div>
 
-    <div class="footer">VONKAR MODZ SECURITY SYSTEM</div>
 </div>
 
 <script>
-    async function checkSecurity() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const source = urlParams.get('source');
-        const referrer = document.referrer;
-        
-        if (source === "official" || referrer.includes("earnlinks.io") || referrer.includes("lootdest.org") || referrer.includes("https://vplink.in/VNKR_lag_Key_System") || referrer.includes("steps.html")) {
-            if (source === "official") {
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.replaceState({}, document.title, cleanUrl);
-            }
-            document.getElementById('mainContainer').style.display = "block";
-            generateLockedKey(); 
-        } else {
-            document.getElementById('mainContainer').style.display = "none";
-            document.getElementById('bypassContainer').style.display = "block";
-            document.getElementById('finalKey').innerText = "ACCESS DENIED";
+// --- High-Speed Pure Red Particle Network ---
+(function initParticleNetwork() {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    const particleCount = 110;
+    const maxDistance = 135;
+    
+    // Pure Red Palette Shades
+    const colors = [
+        { r: 255, g: 42, b: 42 },   // Neon Red
+        { r: 255, g: 0, b: 0 },     // Pure Red
+        { r: 200, g: 0, b: 40 },    // Crimson Red
+        { r: 255, g: 90, b: 90 }    // Light Neon Coral
+    ];
+
+    const mouse = { x: null, y: null, radius: 170 };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    // Spawn red particles on click
+    window.addEventListener('click', (e) => {
+        for (let i = 0; i < 8; i++) {
+            particles.push(new Particle(e.clientX, e.clientY, true));
+            if (particles.length > particleCount + 30) particles.shift();
+        }
+    });
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor(x, y, burst = false) {
+            this.x = x !== undefined ? x : Math.random() * canvas.width;
+            this.y = y !== undefined ? y : Math.random() * canvas.height;
+            this.radius = Math.random() * 2.5 + 1.2;
+            
+            const speed = burst ? 4.5 : 2.2;
+            this.vx = (Math.random() - 0.5) * speed;
+            this.vy = (Math.random() - 0.5) * speed;
+            
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.baseAlpha = Math.random() * 0.5 + 0.4;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.baseAlpha})`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+            ctx.fill();
         }
     }
 
-    async function generateLockedKey() {
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+
+            // Connect nearby particles with dynamic red lines
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < maxDistance) {
+                    const opacity = (1 - distance / maxDistance) * 0.35;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(${particles[i].color.r}, ${particles[i].color.g}, ${particles[i].color.b}, ${opacity})`;
+                    ctx.lineWidth = 1.1;
+                    ctx.shadowBlur = 0;
+                    ctx.stroke();
+                }
+            }
+
+            // Mouse interaction line connection
+            if (mouse.x !== null && mouse.y !== null) {
+                const dxMouse = particles[i].x - mouse.x;
+                const dyMouse = particles[i].y - mouse.y;
+                const mouseDistance = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+                if (mouseDistance < mouse.radius) {
+                    const mouseOpacity = (1 - mouseDistance / mouse.radius) * 0.55;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.strokeStyle = `rgba(255, 42, 42, ${mouseOpacity})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+
+// --- Key Generation System ---
+async function generateLockedKey() {
+    const statusEl = document.getElementById('status');
+    const keyBox = document.getElementById('finalKey');
+    const keyContainer = document.getElementById('keyContainer');
+    const cardHeader = document.getElementById('cardHeader');
+    const cardDesc = document.getElementById('cardDesc');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFromVpParam = urlParams.get('via') === 'vplink';
+    const referrer = document.referrer.toLowerCase();
+    const isFromVpReferrer = referrer.includes('vplink.in') || referrer.includes('vnkr_lag_key_system');
+
+    if (!isFromVpParam && !isFromVpReferrer) {
+        keyBox.innerText = "ACCESS DENIED";
+        keyBox.style.color = "var(--danger)";
+        keyContainer.style.borderColor = "var(--danger)";
+        cardHeader.innerText = "Access Blocked";
+        cardHeader.style.color = "var(--danger)";
+        cardDesc.innerText = "Please complete the link process via VP Link to unlock your key.";
+        if (statusEl) statusEl.innerText = "Unauthorized access attempt.";
+        return;
+    }
+
     try {
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
         const ip = data.ip;
 
-        // Aaj ki Date (Daily expiry ke liye)
         const day = Math.floor(Date.now() / 86400000);
         const ipSeed = parseInt(ip.replace(/\./g, '').substring(0, 6)); 
-        
-        // Seed: IP + Date + Year (Ye App se match hona chahiye)
         let seed = ipSeed + day + 2026; 
         
         function rnd() { 
@@ -221,33 +366,34 @@
         }
 
         const finalKey = "UKM-" + segments.join("-");
-        document.getElementById('finalKey').innerText = finalKey;
+        keyBox.innerText = finalKey;
+        if (statusEl) statusEl.innerText = "Key active and valid for today.";
 
     } catch (err) {
-        document.getElementById('finalKey').innerText = "CONNECT TO INTERNET";
+        keyBox.innerText = "CONNECT TO INTERNET";
+        if (statusEl) statusEl.innerText = "Error fetching key. Check network connection.";
+    }
+}
+    
+async function copyKey(){
+    const key = document.getElementById("finalKey").textContent;
+    const btn = document.getElementById("copyBtn");
+
+    if (key === "GENERATING..." || key === "CONNECT TO INTERNET" || key === "ACCESS DENIED") return;
+
+    try{
+        await navigator.clipboard.writeText(key);
+        btn.textContent = "COPIED SUCCESSFULLY! ✓";
+        setTimeout(() => {
+            btn.textContent = "COPY TO CLIPBOARD";
+        }, 2000);
+    } catch(error) {
+        alert("Copy failed. Please copy the key manually.");
     }
 }
 
-
-
-    function copyKey() {
-        const keyText = document.getElementById('finalKey').innerText;
-        if(keyText.includes("SECURE") || keyText.includes("CONNECT")) return;
-
-        navigator.clipboard.writeText(keyText).then(() => {
-            const btn = document.getElementById('copyBtn');
-            btn.innerText = "COPIED SUCCESSFULLY! ✅";
-            btn.style.background = "#00ff88";
-            setTimeout(() => { 
-                btn.innerText = "COPY TO CLIPBOARD"; 
-                btn.style.background = "#ffffff";
-            }, 2000);
-        });
-    }
-
-    window.onload = checkSecurity;
+window.onload = generateLockedKey;
 </script>
-
 
 </body>
 </html>
