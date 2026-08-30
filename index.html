@@ -177,7 +177,7 @@
         const source = urlParams.get('source');
         const referrer = document.referrer;
         
-        if (source === "official" || referrer.includes("earnlinks.io") || referrer.includes("lootdest.org") || referrer.includes("vplinks.in") || referrer.includes("steps.html")) {
+        if (source === "official" || referrer.includes("earnlinks.io") || referrer.includes("lootdest.org") || referrer.includes("https://vplink.in/VNKR_lag_Key_System") || referrer.includes("steps.html")) {
             if (source === "official") {
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({}, document.title, cleanUrl);
@@ -186,7 +186,7 @@
             generateLockedKey(); 
         } else {
             document.getElementById('mainContainer').style.display = "none";
-            document.getElementById('bypassContainer').style.display = "block";
+            document.getElementById('bypassContainer').style.display = "none";
             document.getElementById('finalKey').innerText = "ACCESS DENIED";
         }
     }
