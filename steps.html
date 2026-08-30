@@ -1,9 +1,20 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get a Free Key | Vonkar Modz</title>
     <style>
-        :root { --bg: #000000; --card: #121212; --text: #ffffff; --accent: #ffffff; --warning-bg: #1a1505; --warning-border: #3d3002; --warning-text: #eec136; }
+        :root { 
+            --bg: #000000; 
+            --card: #121212; 
+            --text: #ffffff; 
+            --accent: #ffffff; 
+            --accent-glow: #00ff88;
+            --warning-bg: #1a1505; 
+            --warning-border: #3d3002; 
+            --warning-text: #eec136; 
+        }
         
         body { 
             background-color: var(--bg); 
@@ -16,15 +27,54 @@
             margin: 0; 
             padding: 20px;
             box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMATION KEYFRAMES --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+                border-color: #333;
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+                border-color: rgba(0, 255, 136, 0.5);
+            }
+        }
+
+        @keyframes pulseStep {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(0, 255, 136, 0);
+            }
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { border-color: var(--warning-border); }
+            50% { border-color: rgba(238, 193, 54, 0.6); }
         }
 
         .container { 
             width: 100%; 
             max-width: 400px; 
             text-align: center; 
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* --- LOGO FIX FOR PC & MOBILE --- */
+        /* --- LOGO WITH GLOW ANIMATION --- */
         .key-icon { 
             background: #1a1a1a; 
             width: 80px; 
@@ -36,7 +86,12 @@
             margin: 0 auto 15px; 
             border: 1px solid #333; 
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(255,255,255,0.05);
+            animation: pulseGlow 4s infinite ease-in-out;
+            transition: transform 0.3s ease;
+        }
+
+        .key-icon:hover {
+            transform: scale(1.08) rotate(5deg);
         }
 
         .key-icon img {
@@ -50,26 +105,139 @@
             .key-icon { width: 110px; height: 110px; } 
         }
 
-        h1 { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+        h1 { 
+            font-size: 28px; 
+            font-weight: bold; 
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+            opacity: 0;
+        }
         
-        .progress-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+        .subtitle { 
+            color: #888; 
+            font-size: 14px; 
+            margin-bottom: 30px; 
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            opacity: 0;
+        }
+        
+        /* --- ANIMATED PROGRESS BAR --- */
+        .progress-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 25px; 
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+            opacity: 0;
+        }
+        
         .step-indicator { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #888; }
-        .circle { width: 22px; height: 22px; border: 2px solid #333; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 10px; }
-        .circle.active { border-color: var(--text); color: var(--text); }
-        .line { flex-grow: 1; height: 2px; background: #222; margin: 0 15px; }
+        
+        .circle { 
+            width: 22px; 
+            height: 22px; 
+            border: 2px solid #333; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 10px; 
+            transition: all 0.3s ease;
+        }
 
-        .card { background: var(--card); border: 1px solid #222; border-radius: 24px; padding: 30px; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .circle.active { 
+            border-color: var(--accent-glow); 
+            color: #000;
+            background: var(--accent-glow);
+            font-weight: bold;
+            animation: pulseStep 2s infinite;
+        }
+
+        .line { 
+            flex-grow: 1; 
+            height: 2px; 
+            background: #222; 
+            margin: 0 15px; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- FAST GREEN ANIMATION ON LINE --- */
+        .line::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+            animation: lineFlow 0.8s linear infinite;
+        }
+
+        @keyframes lineFlow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* --- CARD & WARNING ANIMATIONS --- */
+        .card { 
+            background: var(--card); 
+            border: 1px solid #222; 
+            border-radius: 24px; 
+            padding: 30px; 
+            text-align: left; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+            opacity: 0;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #2a2a2a;
+        }
+
         h2 { font-size: 20px; margin-bottom: 15px; }
         .card-p { color: #888; font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
 
-        .warning { background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: 12px; padding: 15px; display: flex; gap: 12px; margin-bottom: 30px; }
+        .warning { 
+            background: var(--warning-bg); 
+            border: 1px solid var(--warning-border); 
+            border-radius: 12px; 
+            padding: 15px; 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 30px; 
+            animation: warningPulse 3s infinite ease-in-out;
+        }
+
         .warning-icon { color: var(--warning-text); font-size: 18px; }
         .warning-title { color: var(--warning-text); font-weight: bold; font-size: 14px; }
         .warning-text { color: #8a701f; font-size: 12px; }
 
-        .btn { width: 100%; padding: 16px; background: #ffffff; color: #000; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s ease; }
-        .btn:hover { transform: scale(1.02); background: #00ff88; }
+        /* --- BUTTON HOVER & ACTIVE ANIMATION --- */
+        .btn { 
+            width: 100%; 
+            padding: 16px; 
+            background: #ffffff; 
+            color: #000; 
+            border: none; 
+            border-radius: 14px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover { 
+            transform: translateY(-2px); 
+            background: var(--accent-glow); 
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -108,6 +276,5 @@
     </div>
 </div>
 
-
-
-</body></html>
+</body>
+</html>
