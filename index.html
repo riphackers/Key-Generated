@@ -325,9 +325,9 @@ async function generateLockedKey() {
     const cardDesc = document.getElementById('cardDesc');
 
     const urlParams = new URLSearchParams(window.location.search);
-    const isFromVpParam = urlParams.get('via') === 'linkpays';
+    const isFromVpParam = urlParams.get('via') === 'vplink';
     const referrer = document.referrer.toLowerCase();
-    const isFromVpReferrer = referrer.includes('linkpays.in') || referrer.includes('vnkr_lag_key_system');
+    const isFromVpReferrer = referrer.includes('vplink.in') || referrer.includes('vnkr_lag_key_system');
 
     if (!isFromVpParam && !isFromVpReferrer) {
         keyBox.innerText = "ACCESS DENIED";
