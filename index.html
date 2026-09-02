@@ -330,9 +330,8 @@ async function generateLockedKey() {
 
     // Clean parameter from browser address bar seamlessly without refreshing
     if (isFromVpParam) {
-        const cleanUrl = new URL(window.location.href);
-        cleanUrl.searchParams.delete('via');
-        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState(null, '', cleanUrl);
     }
 
     if (!isFromVpParam && !isFromVpReferrer) {
