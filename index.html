@@ -148,7 +148,6 @@ button:hover{
 
 <body>
 
-<!-- Interactive Red Particle Canvas -->
 <canvas id="particle-canvas"></canvas>
 
 <div class="container">
@@ -329,13 +328,20 @@ async function generateLockedKey() {
     const referrer = document.referrer.toLowerCase();
     const isFromVpReferrer = referrer.includes('vplink.in') || referrer.includes('vnkr_lag_key_system');
 
+    // Clean parameter from browser address bar seamlessly without refreshing
+    if (isFromVpParam) {
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete('via');
+        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
+    }
+
     if (!isFromVpParam && !isFromVpReferrer) {
         keyBox.innerText = "ACCESS DENIED";
         keyBox.style.color = "var(--danger)";
         keyContainer.style.borderColor = "var(--danger)";
         cardHeader.innerText = "Access Blocked";
         cardHeader.style.color = "var(--danger)";
-        cardDesc.innerText = "Please complete the link process via VP Links to unlock your key.";
+        cardDesc.innerText = "Please complete the link process via VP Link to unlock your key.";
         if (statusEl) statusEl.innerText = "Unauthorized access attempt.";
         return;
     }
